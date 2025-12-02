@@ -5,7 +5,6 @@ from decimal import Decimal
 from datetime import datetime
 
 async def main():
-    # 1. Load CSV
     try:
         df = pd.read_csv('data.csv')
         print(f"Loaded {len(df)} rows from CSV.")
@@ -21,12 +20,10 @@ async def main():
     print("Inserting data... this may take a moment.")
     count = 0
     for _, row in df.iterrows():
-        # Adjust column names based on your specific CSV headers
-        # Assuming headers are: datetime, open, high, low, close, volume
+       
         try:
             await prisma.stockdata.create(
                 data={
-                    # Parse datetime. Adjust format if CSV is different (e.g. %d/%m/%Y)
                     "datetime": pd.to_datetime(row['datetime']), 
                     "open": Decimal(str(row['open'])),
                     "high": Decimal(str(row['high'])),
